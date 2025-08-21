@@ -1,0 +1,32 @@
+<main class="service-form-container">
+    <h2 class="form-title">Agregar Servicio</h2>
+
+    <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" class="add-service-form">
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Nombre del servicio</mat-label>
+            <input matInput formControlName="name" placeholder="Ej: Corte de cabello">
+            <mat-error *ngIf="serviceForm.get('name')?.invalid">Nombre requerido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput formControlName="description" placeholder="Breve descripción"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Duración (minutos)</mat-label>
+            <input matInput type="number" formControlName="duration" placeholder="Ej: 30">
+            <mat-error *ngIf="serviceForm.get('duration')?.invalid">Duración requerida (mínimo 1)</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Precio</mat-label>
+            <input matInput type="number" formControlName="price" placeholder="Ej: 25000">
+            <mat-error *ngIf="serviceForm.get('price')?.invalid">Precio válido requerido</mat-error>
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" type="submit" class="submit-button" [disabled]="serviceForm.invalid">
+            Guardar
+        </button>
+    </form>
+</main>

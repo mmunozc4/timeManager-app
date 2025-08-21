@@ -1,0 +1,28 @@
+@use "sass:color";
+
+$pastel-blue: #B5EAD7;
+$pastel-green: #C7E5A4;
+$pastel-pink: #FFD3B5;
+$pastel-yellow: #FFF9C4;
+$neutral-light: #F8F9FA;
+$text-dark: #343A40;
+$soft-beige: #F0EFEA; // Nuevo color de fondo sutil
+
+:root {
+  --primary-color: #{$pastel-pink};
+  --primary-hover-color: #{color.adjust($pastel-pink, $lightness: -10%)};
+  --background-color: #{$soft-beige}; // Aplicamos el nuevo color aquí
+  --card-background-color: #{$neutral-light};
+  --text-color: #{$text-dark};
+  --accent-color: #{$pastel-green};
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+}
+
+body{
+    margin: 0 !important; 
+}

@@ -1,0 +1,18 @@
+<mat-drawer-container class="app-drawer-container">
+  @if (isLoggedIn()) {
+  <mat-drawer #drawer mode="over" position="start" class="app-sidebar">
+    <app-sidebar (closeSidebar)="drawer.close()"></app-sidebar>
+  </mat-drawer>
+  }
+
+  <mat-drawer-content class="app-main-content">
+    @if (isLoggedIn()) {
+    <app-header (toggleSidebar)="toggleSidebar()"></app-header>
+    } @else {
+    <app-public-header></app-public-header>
+    }
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>
+
+<app-footer></app-footer>

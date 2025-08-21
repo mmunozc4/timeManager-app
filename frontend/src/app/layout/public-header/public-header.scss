@@ -1,0 +1,16 @@
+    .public-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 16px;
+        /* Ajusta el padding si es necesario */
+    }
+
+    .app-title {
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+
+    .spacer {
+        flex: 1 1 auto;
+    }

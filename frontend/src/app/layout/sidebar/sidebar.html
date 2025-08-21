@@ -1,0 +1,11 @@
+<div class="sidebar-container">
+  <div class="sidebar-header">
+    <h3 class="sidebar-title">Menú</h3>
+  </div>
+
+  <mat-nav-list>
+    <a mat-list-item *ngFor="let item of navItems" [routerLink]="item.route" (click)="closeSidebar.emit()">
+      <span>{{ item.label }}</span>
+    </a>
+  </mat-nav-list>
+</div>

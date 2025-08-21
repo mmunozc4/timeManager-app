@@ -1,0 +1,40 @@
+<main class="appointment-control-container">
+  <header class="page-header">
+    <h1 class="page-title">Mis Citas</h1>
+  </header>
+
+  <section class="status-messages">
+    <p *ngIf="loading" class="loading-message">Cargando citas...</p>
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+    <div *ngIf="!loading && appointments.length === 0" class="empty-state">
+      <p>No tienes citas programadas.</p>
+    </div>
+  </section>
+
+  <div *ngIf="!loading && appointments.length > 0" class="appointment-grid">
+    <table class="appointment-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Servicio</th>
+          <th>Empleado</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let appt of appointments">
+          <td>{{ appt.appointment_time | date:'dd/MM/yyyy' }}</td>
+          <td>{{ appt.appointment_time | date:'HH:mm' }}</td>
+          <td>{{ appt.service?.name }}</td>
+          <td>{{ appt.employee?.name }}</td>
+          <td>
+            <span class="status-badge {{ appt.status | lowercase }}">
+              {{ appt.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>

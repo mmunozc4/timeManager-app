@@ -1,0 +1,27 @@
+<main class="employee-form-container">
+  <h2 class="form-title">Agregar Empleado</h2>
+
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="add-employee-form">
+    
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" placeholder="Ej: Juan Pérez">
+      <mat-error *ngIf="employeeForm.get('name')?.invalid">Nombre requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email">
+      <mat-error *ngIf="employeeForm.get('email')?.invalid">Email válido requerido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Teléfono</mat-label>
+      <input matInput type="tel" formControlName="phone">
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" type="submit" [disabled]="employeeForm.invalid" class="submit-button">
+      Guardar
+    </button>
+  </form>
+</main>

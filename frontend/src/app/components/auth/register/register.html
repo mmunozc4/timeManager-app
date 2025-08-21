@@ -1,0 +1,48 @@
+<div class="auth-container">
+  <mat-card>
+    <h2>Registro</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Rol</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="client">Cliente</mat-option>
+          <mat-option value="business">Negocio</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="phone" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Dirección</mat-label>
+        <input matInput formControlName="address" />
+      </mat-form-field>
+
+      <button mat-flat-button color="accent" type="submit" [disabled]="loading">Registrarse</button>
+    </form>
+
+    @if (error) {
+    <mat-error>{{ error }}</mat-error>
+    }
+
+    <a mat-button routerLink="auth/login">¿Ya tienes cuenta? Inicia sesión</a>
+  </mat-card>
+</div>

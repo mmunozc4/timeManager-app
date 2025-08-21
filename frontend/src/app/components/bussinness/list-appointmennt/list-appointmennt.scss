@@ -1,0 +1,222 @@
+@use "sass:color";
+
+.business-appointments-container {
+  max-width: 1200px;
+  margin: var(--spacing-lg) auto;
+  padding: 0 var(--spacing-md);
+}
+
+.page-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--text-color);
+  text-align: center;
+  margin: 0;
+}
+
+.card-style {
+  background-color: var(--card-background-color);
+  border-radius: var(--spacing-md);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.filters-section {
+  .filter-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    align-items: end;
+  }
+
+  .form-field {
+    width: 100%;
+  }
+}
+
+.status-messages {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+
+  .loading-message, .error-message, .empty-state p {
+    color: var(--text-color);
+    font-size: 1rem;
+  }
+
+  .error-message {
+    color: #DC3545;
+    font-weight: bold;
+  }
+}
+
+.appointments-table-wrapper {
+  overflow-x: auto;
+  
+  .modern-appointment-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+
+    thead {
+      th {
+        font-weight: 600;
+        padding: var(--spacing-md) var(--spacing-md);
+        color: var(--text-color);
+        border-bottom: 2px solid var(--primary-color);
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid #e0e0e0;
+        transition: background-color 0.2s ease;
+        
+        &:hover {
+          background-color: rgba(var(--primary-color), 0.05);
+        }
+      }
+      
+      td {
+        padding: var(--spacing-md);
+        color: var(--text-color);
+      }
+    }
+  }
+}
+
+.status-badge {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--spacing-sm);
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: white;
+
+  &.pending { background-color: #ffc107; }
+  &.accepted { background-color: var(--accent-color); }
+  &.cancelled { background-color: #dc3545; }
+  &.completed { background-color: #17a2b8; }
+}
+
+.actions-cell {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  .action-button {
+    font-size: 0.8rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--spacing-xs);
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    &.accept-button {
+      background-color: var(--primary-color);
+      color: white;
+      &:hover:not([disabled]) {
+        background-color: var(--primary-hover-color);
+        transform: translateY(-1px);
+      }
+    }
+
+    &.cancel-button {
+      background-color: #dc3545;
+      color: white;
+      &:hover:not([disabled]) {
+        background-color: color.adjust(#dc3545, $lightness: -10%);
+        transform: translateY(-1px);
+      }
+    }
+
+    &[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+::ng-deep {
+  .mat-form-field {
+    font-family: inherit;
+    border-radius: var(--spacing-sm);
+  }
+
+  .mat-form-field-appearance-outline {
+    .mat-form-field-outline {
+      border-radius: var(--spacing-sm);
+      .mat-form-field-outline-start,
+      .mat-form-field-outline-gap,
+      .mat-form-field-outline-end {
+        border-color: #D3D3D3 !important;
+      }
+    }
+    &.mat-focused .mat-form-field-outline-thick {
+      color: var(--primary-color) !important;
+    }
+  }
+
+  .mat-form-field-flex {
+    background-color: var(--background-color) !important;
+    border-radius: var(--spacing-sm);
+  }
+
+  .mat-input-element {
+    color: var(--text-color);
+  }
+
+  .mat-form-field-label {
+    color: var(--text-color);
+    font-size: 1rem;
+  }
+
+  .mat-datepicker-toggle-default-icon,
+  .mat-select-arrow {
+    color: var(--primary-color);
+  }
+
+  .mat-select-panel {
+    background-color: var(--card-background-color);
+    border-radius: var(--spacing-sm);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .mat-option {
+    color: var(--text-color);
+    &.mat-selected:not(.mat-option-disabled) {
+      background-color: rgba(var(--primary-color), 0.1);
+      color: var(--primary-color);
+    }
+    &:hover:not(.mat-option-disabled) {
+      background-color: rgba(var(--primary-color), 0.05);
+    }
+  }
+
+  .mat-button.mat-primary,
+  .mat-flat-button.mat-primary {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  .mat-button.mat-warn,
+  .mat-flat-button.mat-warn {
+    background-color: #dc3545;
+    color: white;
+  }
+}
+
+.modern-appointment-table {
+  thead {
+    th:nth-child(5), th:nth-child(6) {
+      text-align: center;
+    }
+  }
+  tbody {
+    td:nth-child(5) {
+      text-align: center;
+    }
+  }
+}
