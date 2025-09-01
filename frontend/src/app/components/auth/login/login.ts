@@ -25,7 +25,7 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
-export class Login implements OnInit{
+export class Login implements OnInit {
   loading = false;
   error: string | null = null;
   loginForm!: FormGroup;
@@ -45,21 +45,25 @@ export class Login implements OnInit{
     this.error = null;
 
     this.auth.login(this.loginForm.value).subscribe({
-next: (session) => {
-      console.log('✅ Sesión iniciada:', session);
-      this.loading = false;
-      if (session.role === 'client') {
-        this.router.navigate(['client/appointment-control']); 
-      } else if (session.role === 'business') {
-        this.router.navigate(['business/appointments']); 
-      } else {
-        this.router.navigate(['/']); 
-      }
-    },
+      next: (session) => {
+        console.log('Sesión iniciada:', session);
+        this.loading = false;
+        if (session.role === 'client') {
+          this.router.navigate(['/public/view-business']);
+        } else if (session.role === 'business') {
+          this.router.navigate(['business/appointments']);
+        } else {
+          this.router.navigate(['/']);
+        }
+      },
       error: () => {
         this.error = 'Credenciales inválidas';
         this.loading = false;
       }
     });
+  }
+
+  navigateTo(path: string){
+    this.router.navigate([path])
   }
 }

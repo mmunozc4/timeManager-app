@@ -21,7 +21,9 @@
   margin-bottom: var(--spacing-lg);
 }
 
-.loading-message, .error-message, .empty-state p {
+.loading-message,
+.error-message,
+.empty-state p {
   color: var(--text-color);
   font-size: 1rem;
 }
@@ -32,7 +34,7 @@
 }
 
 .appointment-grid {
-  overflow-x: auto; // Para que la tabla sea responsive en móviles
+  overflow-x: auto;
   background-color: var(--card-background-color);
   border-radius: var(--spacing-md);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -58,12 +60,12 @@
     tr {
       border-bottom: 1px solid #e0e0e0;
       transition: background-color 0.2s ease;
-      
+
       &:hover {
         background-color: rgba(var(--primary-color), 0.05);
       }
     }
-    
+
     td {
       padding: var(--spacing-md);
       color: var(--text-color);
@@ -79,14 +81,15 @@
   font-size: 0.8rem;
   color: white;
 
-  // Estilos específicos para cada estado (usando el pipe lowercase en el HTML)
   &.pending {
-    background-color: #ffc107; // Amarillo
+    background-color: #ffc107; 
   }
+
   &.confirmed {
-    background-color: #28a745; // Verde
+    background-color: #28a745; 
   }
+
   &.cancelled {
-    background-color: #dc3545; // Rojo
+    background-color: #dc3545; 
   }
 }

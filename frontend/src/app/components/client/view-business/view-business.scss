@@ -1,16 +1,17 @@
 .container {
-  max-width: 1200px;
   margin: var(--spacing-lg) auto;
   padding: 0 var(--spacing-md);
 }
 
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 
-h2 {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
-  color: #555;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+.title h2 {
+  font-weight: 700;
+  font-size: 40px;
 }
 
 .business-list {
@@ -18,7 +19,6 @@ h2 {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--spacing-lg);
 }
-
 
 .card-title {
   color: var(--primary-color);
@@ -53,19 +53,19 @@ h2 {
     display: flex;
     align-items: center;
     margin: 0;
-    font-size: 0.95rem; 
-    color: #666; 
+    font-size: 0.95rem;
+    color: #666;
   }
 
   strong {
     font-weight: 600;
     margin-right: var(--spacing-xs);
-    color: var(--text-color); 
+    color: var(--text-color);
   }
 
   .icon {
     margin-right: var(--spacing-sm);
-    color: var(--primary-color); 
+    color: var(--primary-color);
   }
 
   button {

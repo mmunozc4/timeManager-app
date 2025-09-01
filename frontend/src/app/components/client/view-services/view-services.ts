@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, Injectable } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ScheduleAppointment } from '../schedule-appointment/schedule-appointment';
 
 @Component({
   selector: 'app-view-services',
   imports: [
     CommonModule,
-    MatIconModule
+    MatIconModule,
+    MatDialogModule
   ],
   templateUrl: './view-services.html',
   styleUrl: './view-services.scss'
@@ -18,20 +21,24 @@ export class ViewServices {
   services: any[] = [];
   loading = false;
   error = '';
+  private history: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private api: ApiService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private dialog: MatDialog
+  ) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.history.push(event.urlAfterRedirects);
+      }
+    });
+  }
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('businessId');
     this.businessId = idParam ? +idParam : 0;
-
-    console.log(this.businessId);
-    
-
     if (!this.businessId) {
       this.error = 'ID de comercio inválido';
       return;
@@ -59,7 +66,31 @@ export class ViewServices {
     this.router.navigate(['client/schedule-appointment', this.businessId, serviceId]);
   }
 
-  navigateBefore(){
-    this.router.navigate([''])
+  navigateBefore() {
+    this.history.pop();
+    if (this.history.length > 0) {
+      this.router.navigateByUrl(this.history[this.history.length - 1]);
+    } else {
+      this.router.navigateByUrl('/public/view-business');
+    }
+  }
+
+  openAppointmentSchedule(serviceId: number, serviceName: string): void {
+    const dialogRef = this.dialog.open(ScheduleAppointment, {
+      width: '800px',
+      maxWidth: '90vw',
+      disableClose: false,
+      data: {
+        businessId: this.businessId,
+        serviceId: serviceId,
+        serviceName: serviceName
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'created') {
+        this.loadServices();
+      }
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppointmentService } from '../../../services/appointment.service';
@@ -8,9 +8,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../../services/auth.service';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-schedule-appointment',
@@ -20,10 +21,13 @@ import { AuthService } from '../../../services/auth.service';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatOptionModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule
   ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './schedule-appointment.html',
   styleUrl: './schedule-appointment.scss'
 })
@@ -42,17 +46,17 @@ export class ScheduleAppointment implements OnInit {
     private router: Router,
     private appointmentService: AppointmentService,
     private employeeService: EmployeeService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialogRef: MatDialogRef<ScheduleAppointment>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit() {
     this.session = this.authService.getSession();
-    this.route.paramMap.subscribe(params => {
-      this.businessId = Number(params.get('businessId'));
-      this.serviceId = Number(params.get('serviceId'));
-    });
-    // Si también necesitas el nombre del servicio desde query params
-    this.serviceName = this.route.snapshot.queryParamMap.get('serviceName') || '';
+
+    this.businessId = this.data.businessId;
+    this.serviceId = this.data.serviceId;
+    this.serviceName = this.data.serviceName;
 
     this.appointmentForm = this.fb.group({
       employeeId: ['', Validators.required],
@@ -61,7 +65,10 @@ export class ScheduleAppointment implements OnInit {
     });
 
     this.employeeService.getEmployeesByBusiness(this.businessId).subscribe({
-      next: (res) => this.employees = res,
+      next: (res) => {
+        console.log('pr', res);
+        this.employees = res;
+      },
       error: (err) => console.error(err)
     });
   }
@@ -82,10 +89,15 @@ export class ScheduleAppointment implements OnInit {
       this.appointmentService.createAppointment(appointment).subscribe({
         next: () => {
           alert('Cita agendada correctamente');
-          this.router.navigate(['/client/appointment-control']);
+          this.dialogRef.close('created');
         },
         error: (err) => console.error(err)
       });
     }
+  }
+
+
+  closeModal(): void {
+    this.dialogRef.close();
   }
 }

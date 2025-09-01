@@ -1,35 +1,25 @@
 <main class="schedule-container">
   <h2 class="schedule-title">Agendar Cita</h2>
-
   <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()" class="appointment-form">
-
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Empleado</mat-label>
       <mat-select formControlName="employeeId" required>
-        <mat-option *ngFor="let emp of employees" [value]="emp.id">
-          {{ emp.name }}
-        </mat-option>
+        <mat-option *ngFor="let emp of employees" [value]="emp.id"> {{ emp.name }} </mat-option>
       </mat-select>
     </mat-form-field>
-
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Fecha</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="date" required />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Hora</mat-label>
       <mat-select formControlName="time" required>
-        <mat-option *ngFor="let h of availableHours" [value]="h">
-          {{ h }}
-        </mat-option>
+        <mat-option *ngFor="let h of availableHours" [value]="h"> {{ h }} </mat-option>
       </mat-select>
     </mat-form-field>
-
     <button mat-raised-button color="primary" type="submit" class="submit-button">
-      Agendar
-    </button>
+      Agendar </button>
   </form>
 </main>

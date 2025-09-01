@@ -11,6 +11,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-list-appointmennt',
@@ -23,7 +24,8 @@ import { AuthService } from '../../../services/auth.service';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './list-appointmennt.html',
   styleUrl: './list-appointmennt.scss'

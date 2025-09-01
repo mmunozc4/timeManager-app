@@ -1,14 +1,16 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from models import Base, User, Business, Service, Employee, Client, Appointment
 import bcrypt
 
-# Reemplaza 'your_models_file' con el nombre de tu archivo que contiene los modelos
-# Reemplaza 'sqlite:///./test.db' con la cadena de conexión de tu base de datos
+# Configuración de conexión
 SQLALCHEMY_DATABASE_URL = "postgresql://postgres:Pas123456@localhost:5433/timeManager_db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Crear tablas si no existen
+Base.metadata.create_all(bind=engine)
 
 def get_db():
     db = SessionLocal()
@@ -18,109 +20,118 @@ def get_db():
         db.close()
 
 def hash_password(password: str) -> str:
-    # Genera el hash de la contraseña
     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
 def create_sample_data():
     db = next(get_db())
     try:
-        # Crea la estructura de la base de datos si no existe
-        Base.metadata.create_all(bind=engine)
+        # Limpieza básica para repoblar sin duplicados
+        db.query(Appointment).delete()
+        db.query(Service).delete()
+        db.query(Employee).delete()
+        db.query(Client).delete()
+        db.query(Business).delete()
+        db.query(User).delete()
+        db.commit()
 
-        print("Poblando la base de datos...")
-
-        # --- 1. Crear un usuario de negocio ---
-        hashed_pw_business = hash_password("business123")
-        business_user = User(
-            email="business@example.com",
-            password_hash=hashed_pw_business,
+        # === Usuarios (roles válidos: "business" y "client") ===
+        user_business = User(
+            email="owner@beauty.com",
+            password_hash=hash_password("password123"),
             role="business"
         )
-        db.add(business_user)
-        db.commit()
-        db.refresh(business_user)
-
-        # Crear el negocio asociado
-        business_profile = Business(
-            name="Salón de Belleza 'Glamour'",
-            address="Calle 10 # 5-20, Centro",
-            phone="3001234567",
-            user=business_user
-        )
-        db.add(business_profile)
-        db.commit()
-        db.refresh(business_profile)
-
-        # --- 2. Crear un usuario cliente ---
-        hashed_pw_client = hash_password("client123")
-        client_user = User(
+        user_client = User(
             email="client@example.com",
-            password_hash=hashed_pw_client,
+            password_hash=hash_password("clientpass"),
             role="client"
         )
-        db.add(client_user)
+        db.add_all([user_business, user_client])
         db.commit()
-        db.refresh(client_user)
 
-        # Crear el perfil del cliente asociado
-        client_profile = Client(
-            full_name="Ana García",
-            phone="3109876543",
-            address="Carrera 20 # 30-10",
-            user=client_user
+        # === Negocio (pertenece al user con role=business) ===
+        business = Business(
+            name="Glamour Salon",
+            address="Calle 123 #45-67",
+            phone="3001234567",
+            user_id=user_business.id
         )
-        db.add(client_profile)
+        db.add(business)
         db.commit()
-        db.refresh(client_profile)
 
-        # --- 3. Crear servicios para el negocio ---
-        service_haircut = Service(
-            name="Corte de cabello",
-            description="Corte de cabello para hombre o mujer.",
-            price=35.00,
-            duration_minutes=45,
-            business=business_profile
-        )
-        service_manicure = Service(
-            name="Manicura y pedicura",
-            description="Manicura y pedicura clásica con esmalte.",
-            price=25.00,
-            duration_minutes=60,
-            business=business_profile
-        )
-        db.add_all([service_haircut, service_manicure])
+        # === Servicios del negocio ===
+        services = [
+            Service(
+                name="Corte de cabello",
+                description="Corte clásico y moderno",
+                price=30000,
+                duration_minutes=30,
+                business_id=business.id
+            ),
+            Service(
+                name="Manicure",
+                description="Manicure profesional",
+                price=20000,
+                duration_minutes=40,
+                business_id=business.id
+            ),
+            Service(
+                name="Maquillaje",
+                description="Maquillaje para eventos",
+                price=80000,
+                duration_minutes=60,
+                business_id=business.id
+            ),
+        ]
+        db.add_all(services)
         db.commit()
-        db.refresh(service_haircut)
-        db.refresh(service_manicure)
 
-        # --- 4. Crear un empleado para el negocio ---
-        employee_ana = Employee(
-            name="Ana Torres",
-            role="Estilista principal",
-            phone="3011112233",
-            business=business_profile
-        )
-        db.add(employee_ana)
+        # === Empleados del negocio ===
+        employees = [
+            Employee(name="Laura Gómez", role="Estilista", phone="3009876543", business_id=business.id),
+            Employee(name="Carlos Ruiz", role="Barbero", phone="3014567890", business_id=business.id),
+        ]
+        db.add_all(employees)
         db.commit()
-        db.refresh(employee_ana)
 
-        # --- 5. Crear una cita de ejemplo ---
-        appointment_date = datetime.now() + timedelta(days=2, hours=10)
-        appointment = Appointment(
-            appointment_time=appointment_date,
-            status="scheduled",
-            business=business_profile,
-            service=service_haircut,
-            employee=employee_ana,
-            client=client_profile
+        # === Cliente vinculado a user con role=client ===
+        client = Client(
+            full_name="Ana Torres",
+            phone="3021122334",
+            email="anatorres@example.com",
+            address="Cra 50 #20-15",
+            notes="Prefiere atención en la tarde",
+            user_id=user_client.id
         )
-        db.add(appointment)
+        db.add(client)
         db.commit()
-        
-        print("¡La base de datos se ha poblado con éxito!")
+
+        # === Citas (fechas conscientes de zona horaria UTC) ===
+        now_utc = datetime.now(timezone.utc)
+        appointments = [
+            Appointment(
+                appointment_time=now_utc + timedelta(days=1, hours=3),
+                status="pending",
+                business_id=business.id,
+                service_id=services[0].id,
+                employee_id=employees[0].id,
+                client_id=client.id
+            ),
+            Appointment(
+                appointment_time=now_utc + timedelta(days=2, hours=5),
+                status="confirmed",
+                business_id=business.id,
+                service_id=services[2].id,
+                employee_id=employees[1].id,
+                client_id=client.id
+            ),
+        ]
+        db.add_all(appointments)
+        db.commit()
+
+        print("✅ ¡La base de datos se ha poblado con éxito con roles 'business' y 'client'!")
 
     except Exception as e:
-        print(f"Ocurrió un error: {e}")
+        print(f"❌ Ocurrió un error: {e}")
         db.rollback()
     finally:
         db.close()

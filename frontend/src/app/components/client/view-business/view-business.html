@@ -1,23 +1,16 @@
 <main class="container">
-  <h2>Lista de Comercios</h2>
-
+  <div class="title">
+    <h2>Lista de Comercios</h2>
+  </div>
   <p *ngIf="loading" class="status-message">Cargando comercios...</p>
   <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
-
   <section class="business-list">
     <article class="card" *ngFor="let business of businesses">
       <h3 class="card-title">{{ business.name }}</h3>
-
       <div class="card-content">
-        <p>
-          <strong>Dirección:</strong> {{ business.address || 'No especificada' }}
-        </p>
-        <p>
-          <strong>Teléfono:</strong> {{ business.phone || 'No especificado' }}
-        </p>
-      </div>
-
-      <button (click)="viewServices(business.id)">Ver servicios</button>
+        <p> <strong>Dirección:</strong> {{ business.address || 'No especificada' }} </p>
+        <p> <strong>Teléfono:</strong> {{ business.phone || 'No especificado' }} </p>
+      </div> <button (click)="viewServices(business.id)">Ver servicios</button>
     </article>
   </section>
 </main>

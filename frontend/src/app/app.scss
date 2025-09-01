@@ -1,15 +1,56 @@
-.app-drawer-container {
-    height: calc(100vh - 64px);
-    position: relative;
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
 }
 
-.app-main-content {
-    padding: var(--spacing-md);
-    overflow: auto;
+.app-header {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 2000;
+}
+
+.app-body {
+    height: 80%;
 }
 
 .app-sidebar {
-    background-color: var(--card-background-color);
-    width: 250px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    color: white;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1500;
+    transform: translateX(-100%);
+    transition: transform 0.28s ease-in-out;
+
+    &.open {
+        transform: translateX(0);
+    }
+}
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.38);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease-in-out;
+    z-index: 1400;
+
+    &.show {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+.app-content {
+    flex: 1 1 auto;
+    padding: var(--spacing-md);
+    overflow-y: auto;
 }

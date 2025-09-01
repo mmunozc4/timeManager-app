@@ -1,21 +1,18 @@
 @use "sass:color";
-
-$pastel-blue: #B5EAD7;
-$pastel-green: #C7E5A4;
-$pastel-pink: #FFD3B5;
-$pastel-yellow: #FFF9C4;
-$neutral-light: #F8F9FA;
-$text-dark: #343A40;
-$soft-beige: #F0EFEA; // Nuevo color de fondo sutil
+@use '@angular/material' as mat;
+$deep-purple-blue: #5041BC;
+$soft-gray: #F8F9FA;
+$light-blue-gray: #AEC6CF;
+$vibrant-yellow: #FFC300;
+$dark-text: #2C2C2C;
 
 :root {
-  --primary-color: #{$pastel-pink};
-  --primary-hover-color: #{color.adjust($pastel-pink, $lightness: -10%)};
-  --background-color: #{$soft-beige}; // Aplicamos el nuevo color aquí
-  --card-background-color: #{$neutral-light};
-  --text-color: #{$text-dark};
-  --accent-color: #{$pastel-green};
-
+  --primary-color: #{$deep-purple-blue};
+  --primary-hover-color: #{color.adjust($deep-purple-blue, $lightness: -10%)};
+  --background-color: #{$soft-gray};
+  --card-background-color: #{$soft-gray};
+  --text-color: #{$dark-text};
+  --accent-color: #{$vibrant-yellow};
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -23,6 +20,28 @@ $soft-beige: #F0EFEA; // Nuevo color de fondo sutil
   --spacing-xl: 32px;
 }
 
-body{
-    margin: 0 !important; 
+body {
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+  margin: auto;
+}
+
+.app {
+  display: block;
+  height: 100%;
+}
+
+.mat-mdc-text-field-wrapper {
+  background-color: #ffffff !important;
+  border-radius: 10px;
+}
+
+.mat-mdc-select-panel {
+  background-color: #ffffff !important;
+  border-radius: 10px;
+}
+
+.mat-datepicker-content {
+  background-color: #fff !important;
 }

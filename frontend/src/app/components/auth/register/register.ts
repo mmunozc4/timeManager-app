@@ -30,7 +30,7 @@ export class Register implements OnInit {
   error: string | null = null;
   registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private auth: AuthService) { }
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -45,11 +45,11 @@ export class Register implements OnInit {
 
   onRegister() {
     console.log(this.registerForm.value);
-    
-    if (this.registerForm.invalid){
+
+    if (this.registerForm.invalid) {
       console.log(this.registerForm.errors);
-      
-      return 
+
+      return
     };
 
     this.loading = true;
@@ -57,13 +57,18 @@ export class Register implements OnInit {
 
     this.auth.register(this.registerForm.value).subscribe({
       next: (session) => {
-        console.log('✅ Usuario registrado:', session);
+        console.log('Usuario registrado:', session);
         this.loading = false;
+        this.router.navigate(['/login'])
       },
       error: () => {
         this.error = 'No se pudo registrar';
         this.loading = false;
       }
     });
+  }
+
+  navigateTo(path: string) {
+    this.router.navigate([path])
   }
 }

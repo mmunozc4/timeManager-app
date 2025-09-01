@@ -1,6 +1,5 @@
 // Importa las variables globales si es necesario, aunque ya deberían estar disponibles
 // @use '.../styles.scss' as global;
-
 .services-container {
   max-width: 1200px;
   margin: var(--spacing-lg) auto;
@@ -44,13 +43,15 @@
   margin-bottom: var(--spacing-lg);
 }
 
-.loading-message, .error-message, .empty-state p {
+.loading-message,
+.error-message,
+.empty-state p {
   color: var(--text-color);
   font-size: 1rem;
 }
 
 .error-message {
-  color: #DC3545; // Color de error
+  color: #DC3545; // Color de error 
   font-weight: bold;
 }
 
@@ -100,7 +101,7 @@
   color: var(--text-color);
   font-size: 0.9rem;
   margin: 0 0 var(--spacing-md) 0;
-  flex-grow: 1; // Para que ocupe el espacio y los botones se alineen
+  flex-grow: 1; // Para que ocupe el espacio y los botones se alineen 
 }
 
 .service-meta {
@@ -112,7 +113,8 @@
     margin: 0;
   }
 
-  .price-value, .duration-value {
+  .price-value,
+  .duration-value {
     font-weight: 600;
     color: var(--text-color);
   }
@@ -136,4 +138,15 @@
   &:hover {
     background-color: var(--primary-hover-color);
   }
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.title h2 {
+  font-weight: 700;
+  font-size: 30px;
 }

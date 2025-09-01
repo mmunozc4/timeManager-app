@@ -1,18 +1,17 @@
-<mat-drawer-container class="app-drawer-container">
-  @if (isLoggedIn()) {
-  <mat-drawer #drawer mode="over" position="start" class="app-sidebar">
-    <app-sidebar (closeSidebar)="drawer.close()"></app-sidebar>
-  </mat-drawer>
-  }
+@if (isLoggedIn()) {
+<header class="app-header">
+  <app-header (toggleSidebar)="toggleSidebar()"></app-header>
+</header>
+}
 
-  <mat-drawer-content class="app-main-content">
-    @if (isLoggedIn()) {
-    <app-header (toggleSidebar)="toggleSidebar()"></app-header>
-    } @else {
-    <app-public-header></app-public-header>
+<div class="app-layout">
+  <div class="app-body"> @if (isLoggedIn()) { <div class="sidebar-overlay" [class.show]="sidebarOpen()"
+      (click)="closeSidebar()">
+      <app-sidebar></app-sidebar>
+    </div>
     }
-    <router-outlet></router-outlet>
-  </mat-drawer-content>
-</mat-drawer-container>
-
-<app-footer></app-footer>
+    <main class="app-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
